@@ -1,0 +1,15 @@
+# Ignore everything
+*
+
+# But descend into directories
+!*/
+
+# unignore
+!.gitignore
+!*.py
+!*.ipynb
+!*.md
+!example/**/*.txt
+
+# Ignore
+*.ipynb_checkpoints*
