@@ -10,6 +10,9 @@ from shapely.geometry import Point
 sys.path.insert(0, '/Users/bingyu')
 from sp import interface
 
+### crs
+project_crs='epsg:4326'
+
 class Network():
     def __init__(self, all_nodes, all_links):
         
@@ -91,7 +94,7 @@ class Trains():
         all_nodes = pd.concat([all_nodes, virtual_nodes[all_nodes.columns]])
         all_nodes['node_id'] = np.arange(all_nodes.shape[0])
         all_nodes = gpd.GeoDataFrame(
-            all_nodes, crs='epsg:4326', 
+            all_nodes, crs=project_crs, 
             geometry=[Point(xy) for xy in zip(all_nodes.stop_lon, all_nodes.stop_lat)])
         station_nm_id_dict = {getattr(row, 'route_stop_id'): getattr(
             row, 'node_id') for row in all_nodes.itertuples()}
@@ -118,7 +121,7 @@ class Trains():
             ), axis=1)
         all_links = all_links[['route_stop_id', 'next_route_stop_id', 'start_nid', 'end_nid',
                                'initial_weight', 'geometry']]
-        all_links = gpd.GeoDataFrame(all_links, crs='epsg:4326', geometry=all_links['geometry'].map(loads))
+        all_links = gpd.GeoDataFrame(all_links, crs=project_crs, geometry=all_links['geometry'].map(loads))
         return all_nodes, all_links
     
     def schedule_and_network_from_gtfs(self, stop_times_file, trips_file, stops_file, service_id):
@@ -145,14 +148,16 @@ class Trains():
         for route_id, _ in schedule_table.sort_values(by='route_id', ascending=True).groupby('route_id'):
             route_seq_dict[route_id] = seq_id
             seq_id += 1
-        schedule_table = gpd.GeoDataFrame(schedule_table, crs='epsg:4326', 
+        schedule_table = gpd.GeoDataFrame(schedule_table, crs=project_crs, 
                                            geometry=[Point(xy) for xy in zip(schedule_table.stop_lon, 
                                                                              schedule_table.stop_lat)])
-        schedule_table = schedule_table.to_crs(3857)
+        if project_crs is not None:
+            schedule_table = schedule_table.to_crs(3857)
         schedule_table['stop_x'] = schedule_table.geometry.centroid.x + 10*schedule_table['route_id'].map(route_seq_dict)
         schedule_table['stop_y'] = schedule_table.geometry.centroid.y + 10*schedule_table['route_id'].map(route_seq_dict)
         schedule_table['geometry'] = [Point(xy) for xy in zip(schedule_table.stop_x, schedule_table.stop_y)]
-        schedule_table = schedule_table.to_crs(4326)
+        if project_crs is not None:
+            schedule_table = schedule_table.to_crs(4326)
         schedule_table['stop_lon'] = schedule_table.geometry.centroid.x
         schedule_table['stop_lat'] = schedule_table.geometry.centroid.y
         
@@ -175,6 +180,7 @@ class Trains():
         schedule_table['next_trip_id'] = schedule_table['trip_id'].shift(-1)
         schedule_table['next_arrival_time'] = schedule_table['arrival_time'].shift(-1)
         schedule_table = schedule_table[schedule_table['trip_id']==schedule_table['next_trip_id']]
+        #schedule_table.to_csv('tmp_schedule.csv')
         
         ### create schedule and network
         self.add_schedule(schedule_table)
