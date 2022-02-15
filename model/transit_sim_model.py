@@ -11,7 +11,7 @@ sys.path.insert(0, '/Users/bingyu')
 from sp import interface
 
 ### crs
-project_crs='epsg:4326'
+project_crs=None
 
 class Network():
     def __init__(self, all_nodes, all_links):
@@ -153,13 +153,13 @@ class Trains():
                                                                              schedule_table.stop_lat)])
         if project_crs is not None:
             schedule_table = schedule_table.to_crs(3857)
-        schedule_table['stop_x'] = schedule_table.geometry.centroid.x + 10*schedule_table['route_id'].map(route_seq_dict)
-        schedule_table['stop_y'] = schedule_table.geometry.centroid.y + 10*schedule_table['route_id'].map(route_seq_dict)
+        schedule_table['stop_x'] = schedule_table.geometry.x + 10*schedule_table['route_id'].map(route_seq_dict)
+        schedule_table['stop_y'] = schedule_table.geometry.y + 10*schedule_table['route_id'].map(route_seq_dict)
         schedule_table['geometry'] = [Point(xy) for xy in zip(schedule_table.stop_x, schedule_table.stop_y)]
         if project_crs is not None:
             schedule_table = schedule_table.to_crs(4326)
-        schedule_table['stop_lon'] = schedule_table.geometry.centroid.x
-        schedule_table['stop_lat'] = schedule_table.geometry.centroid.y
+        schedule_table['stop_lon'] = schedule_table.geometry.x
+        schedule_table['stop_lat'] = schedule_table.geometry.y
         
         ### convert arrival and departure time to seconds since midnight
         schedule_table['arrival_time'] = schedule_table['arrival_time'].apply(
@@ -180,7 +180,6 @@ class Trains():
         schedule_table['next_trip_id'] = schedule_table['trip_id'].shift(-1)
         schedule_table['next_arrival_time'] = schedule_table['arrival_time'].shift(-1)
         schedule_table = schedule_table[schedule_table['trip_id']==schedule_table['next_trip_id']]
-        #schedule_table.to_csv('tmp_schedule.csv')
         
         ### create schedule and network
         self.add_schedule(schedule_table)
@@ -287,8 +286,14 @@ class Travelers():
         ### lookup dictionary 2: from trip_id to platform
         stop_trip_ids_dict = {getattr(train, 'trip_id'): 
                                getattr(train, 'location') for train in stop_trains.itertuples()}
-        #print({k:v for k,v in stop_train_locations_dict.items() if v==966030})
-        #print({k:v for k,v in stop_trip_ids_dict.items() if k==966030})
+        ### lookup dictionary 3: platform to stopped train total capacity
+        ### hard coded capacity!!!
+        stop_trains = stop_trains.merge(
+            self.travelers_df[self.travelers_df['traveler_status']=='train'].groupby(
+                'association').size().to_frame('train_occupancy'), left_on='trip_id', right_index=True, how='left')
+        stop_trains['train_occupancy'] = stop_trains['train_occupancy'].fillna(0)
+        stop_train_capacities_dict = {getattr(train, 'location'): 
+                                     (1460-getattr(train, 'train_occupancy')) for train in stop_trains.itertuples()}
         
         ### load departure travelers
         ### (1) change status from "pretrip" to "walking"
@@ -328,8 +333,14 @@ class Travelers():
         ### aboard: travelers ready to aboard
         ### check if next stop is covered
         ### conditions: status is "platform"
+        ### check if there is empty area
         board_travelers = self.travelers_df['traveler_status']=='platform'
         board_travelers = board_travelers & self.travelers_df['association'].isin(stop_train_locations_dict.keys())
+        self.travelers_df['order'] = self.travelers_df.sort_values(
+            by='update_time', ascending=True).groupby('association').cumcount()
+        ### hard-coded capacity
+        self.travelers_df['remain_cap'] = self.travelers_df['association'].map(stop_train_capacities_dict).fillna(1e7)
+        board_travelers = board_travelers & (self.travelers_df['order'] <= self.travelers_df['remain_cap'])
         ### (1) change next stop according to key routes
         self.travelers_df.loc[board_travelers, 'next_station'] = self.travelers_df.loc[
             board_travelers].apply(lambda x: self.find_next_station(x), axis=1)
@@ -338,8 +349,8 @@ class Travelers():
         self.travelers_df.loc[board_travelers, 'association'] = self.travelers_df.loc[board_travelers, 
                                                                      'association'].replace(stop_train_locations_dict)
         ### (3) change status from "platform" to "train"
-        self.travelers_df['traveler_status'] = np.where(
-            board_travelers, 'train', self.travelers_df['traveler_status'])
+        self.travelers_df.loc[board_travelers, 'traveler_status'] = 'train'
+        #self.travelers_df['traveler_status'] = np.where(board_travelers, 'train', self.travelers_df['traveler_status'])
         self.travelers_df.loc[board_travelers, 'update_time'] = t
 
         ### alight: travelers ready to get off the train
@@ -352,7 +363,8 @@ class Travelers():
         self.travelers_df.loc[alight_travelers, 'association'] = self.travelers_df.loc[alight_travelers, 
                                                                      'association'].replace(stop_trip_ids_dict)
         ### (2) change status from "train" to "platform"
-        self.travelers_df['traveler_status'] = np.where(alight_travelers, 'walking', self.travelers_df['traveler_status'])
+        self.travelers_df.loc[alight_travelers, 'traveler_status'] = 'walking'
+        #self.travelers_df['traveler_status'] = np.where(alight_travelers, 'walking', self.travelers_df['traveler_status'])
         self.travelers_df.loc[alight_travelers, 'update_time'] = t
         ### (3) change next stop according to key routes
         self.travelers_df.loc[alight_travelers, 'next_station'] = self.travelers_df.loc[
