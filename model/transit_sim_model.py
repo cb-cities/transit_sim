@@ -11,7 +11,7 @@ sys.path.insert(0, '/Users/bingyu')
 from sp import interface
 
 ### crs
-project_crs=None
+project_crs='epsg:4326'
 
 class Network():
     def __init__(self, all_nodes, all_links):
