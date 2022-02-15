@@ -1,5 +1,0 @@
-Jan 23:
-1. No transfer penalty
-2. Added "load", "board", "alight", "transfer", "arrive"
-3. Check if next stop is covered before boarding the train
-4. check if travelers can transfer between lines
