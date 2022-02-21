@@ -135,7 +135,7 @@ class Trains():
         ### assign a route code to individual trains
         trips_table = trips_table[trips_table['service_id']==service_id]
         schedule_table = pd.merge(schedule_table, trips_table[['trip_id', 'route_id']],
-                                   how='right', on='trip_id')
+                                   how='inner', on='trip_id')
         ### assign a route-stop code to individual stops
         schedule_table['route_stop_id'] = schedule_table.apply(lambda x:
                                                                '{}-{}'.format(x['route_id'], x['stop_id']), axis=1)
