@@ -248,7 +248,7 @@ class Travelers():
                 sp.clear()
                 traveler_path = []
                 key_stops = []
-                print(traveler)
+                print('cannot find route for ', traveler)
             else:
                 sp_path = sp.route(traveler_destin)
                 traveler_path = [
