@@ -8,11 +8,11 @@ The overall simulation logic is shown in the figure below:
 
 Some highlights of the simulator include:
 * Working seamlessly with GTFS inputs, which is available for many transit operators in the world;
-    - Network inputs can be easily modified to reflect changes in infrastructure (e.g., station closures due to natural disasters).
+* Network inputs can be easily modified to reflect changes in infrastructure (e.g., station closures due to natural disasters).
 * Agent-based framework can capture behavior dynamics for individual travelers, trains, and platforms (e.g., platform crowdness in the morning peak);
-    - Traveler-level inputs and the resulting activity patterns can be compared to smartcard data to deepen the understanding of key operational parameters (e.g., train capacity).
+* Traveler-level inputs and the resulting activity patterns can be compared to smartcard data to deepen the understanding of key operational parameters (e.g., train capacity).
 * Simple tabulated OD structure facilitating the test of demand-side strategies;
-    - Generate random OD files (if you are unsure about the demand during the testing phase).
+* Generate random OD files (if you are unsure about the demand during the testing phase).
 * Fast speed: providing opportunities for optimization-based decision support.
 
 
@@ -52,16 +52,16 @@ If you choose to run AAA-M on Google Colab, you don't need to install anything. 
 The code outputs numbers of people waiting at each platform/stop and numbers of people on each train/bus, at a user specified time step (e.g., 20 seconds). Many visualizations can be generated, such as the platform crowding level and train occupancy level plots. These results facilitate the analysis of policy scenarios, e.g., fare policies, on relieving over-crowded platforms or trains.
 
 Individual traveler level (showing trajectories): 
-![Traveler trajectory](images/trace_plot_individual_traveler)
+![Traveler trajectory](images/trace_plot_individual_traveler.png)
 
 Platform level (showing crowdness):
-![Platform crowdness](images/platform_crowdness_downward-beiyunhexi)
+![Platform crowdness](images/platform_crowdness_downward-beiyunhexi.png)
 
 Service run level (showing occupancy):
-![Train occupancy](images/train_occupancy_tripid_171077_before)
+![Train occupancy](images/train_occupancy_tripid_171077_before.png)
 
 System level (showing all train trajectories):
-![All train trajectories](images/trace_plot_all_trains)
+![All train trajectories](images/trace_plot_all_trains.png)
 
 Calibration (parameter tuning through comparing a series of simulations against the observation data):
-![Calibration plot](images/line_6_tune_cap_tt)
+![Calibration plot](images/line_6_tune_cap_tt.png)

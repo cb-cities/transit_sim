@@ -37,11 +37,11 @@ For running on Google Colab:
 ### Example outputs
 
 Platform crowdness:
-![Platform crowdness](images/platform_crowdness_downward-caofang)
+![Platform crowdness](images/platform_crowdness_downward-caofang.png)
 
 Service run occupancy:
-![Train occupancy](images/train_occupancy_tripid_171077_before)
+![Train occupancy](images/train_occupancy_tripid_171077_before.png)
 
 All train trajectories:
-![All train trajectories](images/trace_plot_all_trains)
+![All train trajectories](images/trace_plot_all_trains.png)
 
