@@ -9,8 +9,8 @@
 !*.py
 !*.ipynb
 !*.md
+!*.png
 !example_gtfs_bart/**/*.txt
-!images/**
 
 # Ignore
 *.ipynb_checkpoints*
