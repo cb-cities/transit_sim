@@ -44,8 +44,8 @@ There are in general two ways of running the simulator: locally or on convenient
 
 ##### Running AAA-M on Google Colab
 If you choose to run AAA-M on Google Colab, you don't need to install anything. Just go to the links below and run the notebook. Remember to Skip Step 0(A) as it is for running the code locally:
-* Modify and run the simulation ![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/cb-cities/transit_sim/blob/TRB/transit_sim.ipynb). Or you can refer to [the Beijing subway case study](working_example_beijing_subway) for a working example.
-* Modify and show the visualization ![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/cb-cities/transit_sim/blob/TRB/transit_viz.ipynb). Or you can refer to [the Beijing subway case study](working_example_beijing_subway) for a working example.
+* Modify and run the simulation [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/cb-cities/transit_sim/blob/TRB/transit_sim.ipynb). Or you can refer to [the Beijing subway case study](working_example_beijing_subway) for a working example.
+* Modify and show the visualization [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/cb-cities/transit_sim/blob/TRB/transit_viz.ipynb). Or you can refer to [the Beijing subway case study](working_example_beijing_subway) for a working example.
 
 ### Output
 

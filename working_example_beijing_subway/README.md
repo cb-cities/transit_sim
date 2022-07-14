@@ -31,8 +31,8 @@ For local installation:
 * Generate visualizations using the [transit_sim/transit_viz_beijing_line6.ipynb](transit_sim/transit_viz_beijing_line6.ipynb) using Jupyter Notebook. Customize if needed, e.g., to plot the train occupancy for a specific service run.
 
 For running on Google Colab:
-* Run cell by cell through ![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/cb-cities/transit_sim/blob/TRB/working_example_beijing_subway/transit_sim_beijing_line6.ipynb)
-* Generate visualizations using the ![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/cb-cities/transit_sim/blob/TRB/working_example_beijing_subway/transit_viz_beijing_line6.ipynb)
+* Run cell by cell through [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/cb-cities/transit_sim/blob/TRB/working_example_beijing_subway/transit_sim_beijing_line6.ipynb)
+* Generate visualizations using the [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/cb-cities/transit_sim/blob/TRB/working_example_beijing_subway/transit_viz_beijing_line6.ipynb)
 
 ### Example outputs
 
@@ -43,5 +43,5 @@ Service run occupancy:
 ![Train occupancy](images/train_occupancy_tripid_171077_before.png)
 
 All train trajectories:
-![All train trajectories](images/trace_plot_all_trains.png)
+![All train trajectories](images/trajectory_plot_all_trains.png)
 
