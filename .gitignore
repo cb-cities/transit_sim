@@ -11,6 +11,7 @@
 !*.md
 !*.png
 !example_gtfs_bart/**/*.txt
+!working_example_beijing_subway/inputs/*.csv
 
 # Ignore
 *.ipynb_checkpoints*
