@@ -14,7 +14,7 @@ Simulating train movements, traveler locations, and platform crowdness for the e
 |    +--- gtfs_line6_stops.csv: GTFS stops.txt file for the study area
 |    +--- gtfs_line6_stop_times.csv: GTFS stop_times.txt file for the study area
 |    +--- gtfs_line6_trips.csv: GTFS trips.txt file for the study area
-|    +--- beijing_line6_od.csv: morning peak OD for a typical day
+|    +--- beijing_line6_random_od.csv: morning peak OD for a typical day (without loss of generality, we use mock data for simulation illustration purposes)
 +--- outputs: outputs for the simulation, including train-leve, traveler-level, and system-level outputs
 |    +--- train_outputs/*: time-stampped train status and occupancy
 |    +--- traveler_outputs/*: time_stampped aggregated or individual traveler status (e.g., # passengers waiting at a platform)
